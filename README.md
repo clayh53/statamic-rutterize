@@ -68,7 +68,7 @@ The CSS for these pairs is then targeted with something like this:
 
 ### Caveats and Do you need this?
 
-Note that Statamic modifiers should have **NO** spaces between before or after the pipe ```'|'```!
+Note that Statamic modifiers should have **NO** spaces before or after the pipe ```'|'```!
 
 Why use this plugin? If you are are a serious typography nerd and care about making your site look its absolute best, this modifier could prove useful. 
 
