@@ -38,8 +38,8 @@ class Modifier_rutterize extends Modifier
 			$value = preg_replace($abbreviation_search,$abbreviation_replace,$value);
 			
 			//insert non-breaking spaces between numbers and subsequent words
-			$numbered_word_search = '/([0-9]) ([a-zA-Z])/';
-			$numbered_word_replace = '$1&nbsp;$2';
+			$numbered_word_search = '/([" "])([0-9]) ([a-zA-Z])/';
+			$numbered_word_replace = ' $2&nbsp;$3';
 			$value = preg_replace($numbered_word_search,$numbered_word_replace,$value);
 	        
 	        //insert some spans to target some basic kerning pairs - a capital 'T' followed by
