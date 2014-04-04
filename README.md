@@ -1,78 +1,70 @@
-## Statamic add-on modifiers : rutterize
+## Statamic add-on modifiers : last_folder
 
 ### Description
 
-This modifier takes the content piped to it, and inserts some typographic tags in the content so that type nerds can style abbreviations, create non-breaking spaces between numbers and subsequent words and creates some basic span elements for kerning. All this stuff is lifted directly from the classic Richard Rutter website [The Elements of Typographic Style Applied to the Web](http://webtypography.net). 
+This is a very basic modifier used in conjunction with the statamic ```{{_folder}}```  variable that is available inside the ```{{entries:listing}}```tag. ```{{_folder}}``` variable returns the full the path to the folder of the entry being output on that loop iteration. 
+
+This modifier strips all but the last foldername from that path.  
 
 The modifier is used as a pipe that modifies the content handed to it. 
 
 ### Installation
 
-Drop the folder *rutterize* in the add-ons folder in your Statamic project. Inside this folder is the modifier mod.toc.php file. 
+Drop the folder *last_folder* in the add-ons folder in your Statamic project. Inside this folder is the modifier mod.last_folder.php file. 
 
 
 ### Usage
 
 Typical use inside a template might look like this:
 
-```
-<article>
-	<h1>{{title}}</h1>
-	{{content|rutterize}}
-</article>
-```	
-
-### Basic example with some styling
-
-This plugin inserts three types of html tags into the content that can then be styled. 
-
-#### Abbreviations
-
-The first thing the modifier does is scan for abbreviations such as *CIA* or *FBI* and wraps them in an ```<abbr> </abbr>``` tag. Target this with some special styles in the CSS. For example this changes the font-variant to small caps, reduces the size slightly and scrunches the letters closer together:
 
 ```
-abbr {
-	font-variant: small-caps;
-	font-size: 0.95rem;
-	letter-spacing: -0.05rem;
-}
-```
+{{entries:listing folder="topfolder/events|topfolder/link-posts|topfolder/posts|topfolder/articles" sort_dir="desc"}}
+	
+	<a href="{{url}}"><h3>{{title}}</h3></a>
+	
+	<h4>entry type: {{_folder|last_folder}}</h4>
 
-#### Non-breaking spaces in number-word sequences
+	<p>{{content|pluck|widont}}</p>
 
-The next action the add-on performs is a scan for sequences like *1 December* and *9 balloons* and it inserts a non-breaking ```&nbsp;``` entity between the number and the following letters so lines won't end with a lonely number.
+{{/entries:listing}}
 
-It prevents this:
 
-```
-I am very happy to have on one occasion received 9
-ballons.
-```
+So if I had folder organization like this:
 
-and instead will produce this:
+/---
+    /topfolder--
+                /events/
+                   - entryA
+                /posts/
+                   - entryB
+                   - entryC
+                /link-posts/
+                   - entryD
+                /articles/
+                   - entryE
 
-```
-I am very happy to have on one occasion received 
-9 ballons.
-```
-
-#### Adds some kerning pairs for capital/lowercase letter sequences
-
-The final action the add-on performs is a scan for some typical sequences of capital and lowercase letters that could stand a little love with some kerning (letterspacing adjustments). The plugin wraps these sequences in a span of class 'kern' that can then be styled in the CSS. The two letter sequences that are targeted in this add-on are the combinations of a capital 'T' and lowercase 'o', and an uppercase 'W' with a lowercase 'a'. Feel free to add more pairs to the plugin body if your copy and font choice indicate that they are needed.
-
-The CSS for these pairs is then targeted with something like this:
 
 ```
-.kern {letter-spacing: -0.07em }
-```
+
+		
+
+The modifier could output an 'events' label for entryA, a 'posts' label for entryB and entryC, and a 'link-posts' label for entryD and so on.
+
+
+### Use case
+
+In creating my site, I wanted to separate different types of non-page content into types - sort of a roll-your-own equivalent of a *channel* in Expression Engine-speak. 
+
+In master listings and archives that mix up all types of content, I wanted the site user to be able to determine the type of content for each entry, In other words was the listing entry for a regular post, a link post, or an event? 
+
+With some semi-informative folder-naming conventions, this will allow you to grab the name of the folder enclosing the content and display it as an output that can be formatted to your liking.
 
 ### Caveats and Do you need this?
 
 Note that Statamic modifiers should have **NO** spaces before or after the pipe ```'|'```!
 
-Why use this plugin? If you are are a serious typography nerd and care about making your site look its absolute best, this modifier could prove useful. 
-
-On the other hand, it may seem a little precious to even care. I am guessing that 90% of your website's users will not even notice that you give a shit. Your call.
+Why use this plugin? If you have a site that has more than one type of entry (or posts) type content, this modifier could prove useful for grabbing the name of an entries enclosing folder. 
 
 
 
